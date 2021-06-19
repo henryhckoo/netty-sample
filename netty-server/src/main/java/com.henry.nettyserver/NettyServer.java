@@ -8,6 +8,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 
 public class NettyServer {
 
@@ -30,12 +32,11 @@ public class NettyServer {
               ch.pipeline().addLast(new LuckyNumberServerHandler());
             }
           })
-          .option(ChannelOption.SO_BACKLOG, 128)
+          .handler(new LoggingHandler(LogLevel.INFO))
           .childOption(ChannelOption.SO_KEEPALIVE, true);
 
       ChannelFuture future = bootstrap.bind(port).sync();
 
-      System.out.println("Begin server");
       future.channel().closeFuture().sync();
     } catch (InterruptedException e) {
       System.err.println("Bye");

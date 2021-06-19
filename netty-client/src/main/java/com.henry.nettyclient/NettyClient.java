@@ -8,6 +8,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 
 public class NettyClient {
 
@@ -22,6 +24,7 @@ public class NettyClient {
           .group(eventLoopGroup)
           .channel(NioSocketChannel.class)
           .option(ChannelOption.SO_KEEPALIVE, true)
+          .handler(new LoggingHandler(LogLevel.INFO))
           .handler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
@@ -30,8 +33,8 @@ public class NettyClient {
           });
 
       ChannelFuture future = bootstrap.connect(host, port).sync();
-    
-      future.channel().closeFuture().sync();
+
+      future.channel().closeFuture().sync().channel();
     } catch (InterruptedException e) {
       System.err.println("Bye");
     } finally {

@@ -1,20 +1,40 @@
 package com.henry.nettyserver;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.CharsetUtil;
 import io.netty.util.ReferenceCountUtil;
 import java.io.IOException;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class LuckyNumberServerHandler extends SimpleChannelInboundHandler<String> {
+public class LuckyNumberServerHandler extends ChannelInboundHandlerAdapter {
 
   @Override
-  protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+  public void channelActive(ChannelHandlerContext ctx) {
+    ctx.writeAndFlush(Unpooled.copiedBuffer("hi", CharsetUtil.UTF_8));
+  }
+
+
+  @Override
+  public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
     try {
-      System.out.println(msg);
+      ByteBuf in = (ByteBuf) msg;
+      String msgString = in.toString(CharsetUtil.UTF_8);
+      System.out.println("Received: " + msgString);
+
+      ChannelFuture a = ctx.writeAndFlush(
+          Unpooled.copiedBuffer(
+              String.valueOf(ThreadLocalRandom.current().nextInt(1, 9999)), CharsetUtil.UTF_8
+          )
+      );
     } finally {
       ReferenceCountUtil.release(msg);
     }
   }
+
 
   @Override
   public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

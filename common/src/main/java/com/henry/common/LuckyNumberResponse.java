@@ -1,7 +1,11 @@
 package com.henry.common;
 
 import java.util.concurrent.ThreadLocalRandom;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class LuckyNumberResponse {
 
   private final long requestId;
