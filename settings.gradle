@@ -1,0 +1,5 @@
+rootProject.name = 'netty-sample'
+include 'netty-server'
+include 'netty-client'
+include 'spring-rest-client'
+
