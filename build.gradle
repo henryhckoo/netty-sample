@@ -36,9 +36,10 @@ subprojects {
     }
 
     dependencies {
-        testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
         compileOnly group: 'org.projectlombok', name: 'lombok', version: lombokVersion
         annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+
+        implementation group: 'io.netty', name: 'netty-all', version: '4.1.65.Final'
     }
 
     test {
