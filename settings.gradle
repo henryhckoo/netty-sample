@@ -2,5 +2,4 @@ rootProject.name = 'netty-sample'
 include 'netty-server'
 include 'netty-client'
 include 'spring-client'
-include 'common'
 

@@ -2,7 +2,6 @@ package com.henry.nettyserver;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
@@ -25,11 +24,10 @@ public class LuckyNumberServerHandler extends ChannelInboundHandlerAdapter {
       String msgString = in.toString(CharsetUtil.UTF_8);
       System.out.println("Received: " + msgString);
 
-      ChannelFuture a = ctx.writeAndFlush(
-          Unpooled.copiedBuffer(
-              String.valueOf(ThreadLocalRandom.current().nextInt(1, 9999)), CharsetUtil.UTF_8
-          )
-      );
+      int randomNum = ThreadLocalRandom.current().nextInt(1, 9999);
+      String response = msgString + "|" + randomNum;
+
+      ctx.writeAndFlush(Unpooled.copiedBuffer(response, CharsetUtil.UTF_8));
     } finally {
       ReferenceCountUtil.release(msg);
     }
