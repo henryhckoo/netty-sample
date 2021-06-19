@@ -5,7 +5,3 @@ plugins {
 application {
     mainClass = 'com.henry.nettyclient.NettyServer'
 }
-
-dependencies {
-    compileOnly(project(":common"))
-}
