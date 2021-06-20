@@ -68,6 +68,9 @@ public class NettyInboundHandler extends ChannelInboundHandlerAdapter {
 
         future.complete(luckyNum);
       } finally {
+        if (future != null && !future.isDone()) {
+          future.cancel(true);
+        }
         futureMap.remove(requestId);
       }
     } finally {
